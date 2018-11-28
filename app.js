@@ -1,9 +1,29 @@
 var express = require('express');
 var path = require('path');
+
+//路由
 var router = require('./routes/routes');
+var rout_register = require('./routes/register');
+var rout_login = require('./routes/login');
+
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var app = express();
+
+//设置跨域
+app.all("*",function(req,res,next){
+    //设置允许跨域的域名，*代表允许任意域名跨域
+    res.header("Access-Control-Allow-Origin","http://localhost:9000");
+    //允许的header类型
+    res.header("Access-Control-Allow-Headers","*");
+    //跨域允许的请求方式
+    res.header("Access-Control-Allow-Methods","DELETE,PUT,POST,GET,OPTIONS");
+    if (req.method.toLowerCase() == 'options'){
+        res.send(200);  //让options尝试请求快速结束
+    }else{
+        next();
+    }
+});
 
 // 默认目录
 app.set('views',path.join(__dirname,'./views'));
@@ -21,12 +41,13 @@ app.set('trust proxy', 1);
 app.use(session({
     secret: 'Encrypted string',
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false
 }));
 
 //加载路由
 app.use(router);
-
+app.use(rout_register);
+app.use(rout_login);
 
 app.listen(5000,function () {
     console.log('启动了')
