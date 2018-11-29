@@ -5,6 +5,7 @@ var path = require('path');
 var router = require('./routes/routes');
 var rout_register = require('./routes/register');
 var rout_login = require('./routes/login');
+var rout_locookie = require('./routes/locookie');
 
 var bodyParser = require('body-parser');
 var session = require('express-session');
@@ -46,7 +47,7 @@ app.set('trust proxy', 1);
 app.use(session({
     secret: 'xxxxx',
     name:'lvcookie',
-    cookie: {maxAge: 80000},
+    cookie: {maxAge: 1000*60*60},
     resave: false,
     saveUninitialized: false,
     store:require('mongoose-session')(mongoose)
@@ -56,6 +57,7 @@ app.use(session({
 app.use(router);
 app.use(rout_register);
 app.use(rout_login);
+app.use(rout_locookie);
 
 app.listen(5000,function () {
     console.log('启动了')

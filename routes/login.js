@@ -24,10 +24,6 @@ rout_login.post('/login', async function (req, res) {
             })
         }
         req.session.user = user;
-        console.log(req.session.cookie.domain);
-        console.log(req.session.cookie);
-        // req.session.cookie.domain = "http:127.0.0.1:5000/login";
-        console.log(req.session);
         res.status(200).json({
             err_code:0,
             message:'登陆成功'
